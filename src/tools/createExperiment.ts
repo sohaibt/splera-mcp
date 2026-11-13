@@ -163,7 +163,7 @@ export const createExperimentTool: Tool = {
     const exp = res.experiment;
 
     const primaryMetric = metrics.find((m) => m.is_primary) ?? metrics[0];
-    const resultsUrl = `https://splera.app/experiments/${exp.id}`;
+    const resultsUrl = `https://splera.ai/experiments/${exp.id}`;
 
     // Human-readable text block. The install snippet is the "aha moment" —
     // agents paste it verbatim, so keep the formatting stable.
@@ -183,7 +183,7 @@ export const createExperimentTool: Tool = {
 
     // Structured JSON block. CRITICAL: agents parse this, not the prose.
     // `apiUrl` from config isn't substituted into results_url because the
-    // customer-facing dashboard is always splera.app — apiUrl may be an
+    // customer-facing dashboard is always splera.ai — apiUrl may be an
     // internal/api subdomain.
     const jsonBlock = {
       experiment_id: exp.id,

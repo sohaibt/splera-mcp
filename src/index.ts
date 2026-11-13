@@ -20,8 +20,10 @@ console.error(`splera-mcp: connecting to ${apiUrl}`);
 // Install verification with a 5s timeout. Slow networks should not hang
 // the MCP host — hosts typically kill a server that doesn't respond in ~10s.
 // On timeout or network error: soft-fail (warn + continue). The first real
-// tool call will re-surface the error with full context. On 401: hard-fail
-// with regenerate guidance.
+// tool call will re-surface the error with full context. A missing or
+// rejected key warns but does NOT exit, so the server still answers
+// tools/list (directories like Glama introspect without a key); every tool
+// call then returns SPLERA_API_KEY_MISSING / SPLERA_INVALID_API_KEY.
 const VERIFY_TIMEOUT_MS = 5_000;
 try {
   const ctrl = new AbortController();
@@ -34,17 +36,19 @@ try {
 } catch (err) {
   const msg = (err as Error).message ?? String(err);
   const code = (err as { code?: string }).code ?? '';
-  if (code === 'SPLERA_INVALID_API_KEY') {
+  if (code === 'SPLERA_API_KEY_MISSING') {
+    // config.ts already logged the fix.
+  } else if (code === 'SPLERA_INVALID_API_KEY') {
     console.error(
-      'splera-mcp: API key rejected (401).\n' +
-        'Regenerate at https://splera.app/settings or verify with:\n' +
+      'splera-mcp: API key rejected (401). Tools will list, but every call fails until it is fixed.\n' +
+        'Regenerate at https://splera.ai/settings or verify with:\n' +
         '  curl -H "Authorization: Bearer $SPLERA_API_KEY" https://splera.app/api/me'
     );
-    process.exit(1);
+  } else {
+    console.error(
+      `splera-mcp: startup verification skipped (${msg}). Will retry on first tool call.`
+    );
   }
-  console.error(
-    `splera-mcp: startup verification skipped (${msg}). Will retry on first tool call.`
-  );
 }
 
 const tools = [createExperimentTool, getResultsTool, shipWinnerTool];

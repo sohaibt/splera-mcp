@@ -32,18 +32,21 @@ describe('loadConfig', () => {
     errorSpy.mockRestore();
   });
 
-  it('exits(1) when SPLERA_API_KEY is missing', () => {
-    expect(() => loadConfig()).toThrow(/process\.exit\(1\)/);
-    expect(exitSpy).toHaveBeenCalledWith(1);
+  // A missing key must NOT exit: directories (Glama) and MCP inspectors start
+  // the server without a key and only call tools/list. apiClient refuses calls.
+  it('warns but does not exit when SPLERA_API_KEY is missing', () => {
+    const cfg = loadConfig();
+    expect(cfg.apiKey).toBe('');
+    expect(exitSpy).not.toHaveBeenCalled();
     expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining('SPLERA_API_KEY not set')
     );
   });
 
-  it('exits(1) when SPLERA_API_KEY is empty string (falsy)', () => {
+  it('warns but does not exit when SPLERA_API_KEY is empty string (falsy)', () => {
     process.env.SPLERA_API_KEY = '';
-    expect(() => loadConfig()).toThrow(/process\.exit\(1\)/);
-    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(loadConfig().apiKey).toBe('');
+    expect(exitSpy).not.toHaveBeenCalled();
   });
 
   it('exits(1) when SPLERA_API_URL is malformed', () => {

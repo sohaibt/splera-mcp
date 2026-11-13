@@ -7,7 +7,7 @@ A/B testing for vibe coders, exposed as a Model Context Protocol (MCP) server. Y
 Three native tools your agent gets once installed: `create_experiment`, `get_results`, `ship_winner`. The agent calls them, edits your code to wire the SDK and variant, and reports stats back in plain English. No dashboard tab, no copy-paste, no test infrastructure to learn.
 
 - npm: [`splera-mcp`](https://www.npmjs.com/package/splera-mcp)
-- Web docs: [splera.app/docs/mcp](https://splera.app/docs/mcp)
+- Web docs: [splera.ai/docs/mcp](https://splera.ai/docs/mcp)
 - Issues: [github.com/sohaibt/splera-mcp/issues](https://github.com/sohaibt/splera-mcp/issues)
 
 ---
@@ -30,7 +30,7 @@ The agent picks the right tool, makes the call, and either edits your code to in
 
 ### 1. Generate an API key
 
-Go to [splera.app/settings](https://splera.app/settings), click **Generate new key**, name it something like `claude-code-macbook`. Copy the key from the one-time modal. It starts with `splera_live_`. You will not see the full key again. If you close the modal without copying, revoke and regenerate.
+Go to [splera.ai/settings](https://splera.ai/settings), click **Generate new key**, name it something like `claude-code-macbook`. Copy the key from the one-time modal. It starts with `splera_live_`. You will not see the full key again. If you close the modal without copying, revoke and regenerate.
 
 ### 2. Add the config to your agent
 
@@ -100,7 +100,7 @@ Restart Zed.
 curl -H "Authorization: Bearer splera_live_your_key_here" https://splera.app/api/me
 ```
 
-`200 OK` with a JSON body means the key works. `401` means the key is bad or revoked, regenerate at [splera.app/settings](https://splera.app/settings).
+`200 OK` with a JSON body means the key works. `401` means the key is bad or revoked, regenerate at [splera.ai/settings](https://splera.ai/settings).
 
 ### Option B: check the agent's MCP panel after restart
 
@@ -121,17 +121,17 @@ If those lines are missing, the MCP isn't loading. Check your config file path a
 
 The MCP config isn't being read. Check that (1) you edited the right file for your agent (see install table above), (2) the JSON is valid, no trailing commas, (3) you restarted the agent after editing.
 
-### `SPLERA_API_KEY not set`
+### `SPLERA_API_KEY not set` / `SPLERA_API_KEY_MISSING` on every call
 
-The `env` block in your MCP config is missing or malformed. The key must start with `splera_live_`. Re-check the examples above.
+The server starts without a key (so your agent still lists the tools), but every call fails until the key is set. The `env` block in your MCP config is missing or malformed. The key must start with `splera_live_`. Re-check the examples above.
 
 ### 401 / `SPLERA_INVALID_API_KEY` on every call
 
-The key is wrong, revoked, or truncated during copy. Go to [splera.app/settings](https://splera.app/settings), revoke the existing key, generate a new one, update the config, restart the agent.
+The key is wrong, revoked, or truncated during copy. Go to [splera.ai/settings](https://splera.ai/settings), revoke the existing key, generate a new one, update the config, restart the agent.
 
 ### `SPLERA_PLAN_LIMIT_EXCEEDED` on create_experiment
 
-You've hit your plan's monthly experiment cap. Options: [upgrade](https://splera.app/pricing) or ship / stop an existing experiment to free a slot. The error `hint` field tells you which plan and how many slots are used.
+You've hit your plan's monthly experiment cap. Options: [upgrade](https://splera.ai/pricing) or ship / stop an existing experiment to free a slot. The error `hint` field tells you which plan and how many slots are used.
 
 ### `get_results` says NOT_READY forever
 
@@ -145,7 +145,7 @@ The SDK isn't reaching the page being tested. Verify the script tag is in place:
 
 `data-api-url` is required: without it the SDK tracks nothing. If your experiment was created with splera-mcp 0.1.1, its install code was missing this attribute and used a callback form of `getVariant` that never runs. Re-copy the snippet from the experiment page on the dashboard.
 
-Also confirm the page is receiving real traffic. The dashboard shows live exposure counts at [splera.app/experiments/:id](https://splera.app).
+Also confirm the page is receiving real traffic. The dashboard shows live exposure counts at [splera.ai/experiments/:id](https://splera.ai).
 
 ### Agent doesn't use the Splera tool even when I ask
 
@@ -196,15 +196,15 @@ Ship the winning variant to 100% of traffic. The SDK flips server-side within 30
 - `splera-mcp` makes HTTPS calls to `splera.app` only. No local telemetry, no third-party analytics from this package.
 - Your API key stays on your machine in your agent's MCP config. It's never logged server-side.
 - Keys are stored as `sha256` hashes in our database. Even if our DB were compromised, the raw keys are not recoverable.
-- Revoke any key instantly at [splera.app/settings](https://splera.app/settings). Revocation takes effect within 60 seconds.
+- Revoke any key instantly at [splera.ai/settings](https://splera.ai/settings). Revocation takes effect within 60 seconds.
 
 ---
 
 ## Links
 
-- [Settings / API keys](https://splera.app/settings) — generate, name, revoke
-- [Pricing](https://splera.app/pricing) — plan limits and upgrade
-- [Web docs](https://splera.app/docs/mcp) — longer-form setup guide with screenshots
+- [Settings / API keys](https://splera.ai/settings) — generate, name, revoke
+- [Pricing](https://splera.ai/pricing) — plan limits and upgrade
+- [Web docs](https://splera.ai/docs/mcp) — longer-form setup guide with screenshots
 - [GitHub issues](https://github.com/sohaibt/splera/issues) — bug reports and feature requests
 
-Built by [Splera](https://splera.app). A/B testing for vibe coders.
+Built by [Splera](https://splera.ai). A/B testing for vibe coders.

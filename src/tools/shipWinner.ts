@@ -85,7 +85,7 @@ export const shipWinnerTool: Tool = {
       new Date(exp.shipped_at).getTime() + exp.guard_window_days * DAY_MS
     ).toISOString();
     const guardWindowEndsDate = guardWindowEndsAt.slice(0, 10); // YYYY-MM-DD
-    const resultsUrl = `https://splera.app/experiments/${exp.id}`;
+    const resultsUrl = `https://splera.ai/experiments/${exp.id}`;
 
     const text =
       `Shipped ${winningLabel} to 100% of traffic.\n` +

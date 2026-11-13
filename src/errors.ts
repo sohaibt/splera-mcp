@@ -26,10 +26,12 @@ export class SpleraError extends Error {
  * Keep them actionable — every hint ends in a thing the user can DO.
  */
 export const HINTS: Record<string, string> = {
+  SPLERA_API_KEY_MISSING:
+    'Set SPLERA_API_KEY in the env block of your MCP config (generate a key at https://splera.ai/settings), then restart your agent.',
   SPLERA_INVALID_API_KEY:
-    'Check SPLERA_API_KEY or regenerate at https://splera.app/settings.',
+    'Check SPLERA_API_KEY or regenerate at https://splera.ai/settings.',
   SPLERA_PLAN_LIMIT_EXCEEDED:
-    'Upgrade at https://splera.app/pricing, or ship/stop an existing experiment to free a slot.',
+    'Upgrade at https://splera.ai/pricing, or ship/stop an existing experiment to free a slot.',
   SPLERA_DOMAIN_NOT_ALLOWED:
     'This experiment is locked to specific domains. Add the requesting origin at the experiment\'s /settings.',
   SPLERA_EXPERIMENT_NOT_FOUND:
@@ -39,11 +41,11 @@ export const HINTS: Record<string, string> = {
   SPLERA_MCP_VERSION_TOO_OLD:
     'splera-mcp client is below the minimum supported version. Run: npm update -g splera-mcp',
   SPLERA_HTTP_ERROR:
-    'Transient Splera API error. Retry in a moment, or check https://splera.app for status.',
+    'Transient Splera API error. Retry in a moment, or check https://splera.ai for status.',
   SPLERA_UNKNOWN_TOOL:
     'Unknown tool name. Expected one of: create_experiment, get_results, ship_winner.',
   SPLERA_JWT_REQUIRED:
-    'This action requires a browser session, not an API key. Sign in at https://splera.app/settings.',
+    'This action requires a browser session, not an API key. Sign in at https://splera.ai/settings.',
 };
 
 /**

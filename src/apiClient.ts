@@ -18,6 +18,13 @@ export async function apiFetch<T>(
   path: string,
   init: RequestInit = {}
 ): Promise<T> {
+  if (!apiKey) {
+    throw new SpleraError(
+      'SPLERA_API_KEY_MISSING',
+      'SPLERA_API_KEY is not set.',
+      HINTS.SPLERA_API_KEY_MISSING
+    );
+  }
   const res = await fetch(`${apiUrl}${path}`, {
     ...init,
     headers: {

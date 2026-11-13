@@ -1,9 +1,12 @@
 /**
  * Env var parsing + validation. Loaded once at startup.
  *
- * Fails fast (process.exit(1)) on missing or malformed env vars so the
- * user learns the problem in the MCP host's server-logs panel instead of
- * getting a 30-second stuck agent or silent auth failures downstream.
+ * A missing SPLERA_API_KEY does NOT exit: the server still starts and lists
+ * its tools (directories like Glama and MCP inspectors introspect without a
+ * key), logs the fix to the host's server-logs panel, and every tool call
+ * returns SPLERA_API_KEY_MISSING with the same fix (apiClient.ts).
+ * A malformed SPLERA_API_URL still fails fast (process.exit(1)) — that is a
+ * developer override, never set by directories.
  */
 
 export interface Config {
@@ -16,12 +19,12 @@ export function loadConfig(): Config {
   if (!apiKey) {
     console.error(
       'splera-mcp: SPLERA_API_KEY not set.\n' +
-        'Generate a key at https://splera.app/settings.\n' +
+        'Generate a key at https://splera.ai/settings.\n' +
         'Your MCP config env block should look like:\n' +
         '  { "splera": { "command": "npx", "args": ["-y", "splera-mcp@latest"], ' +
-        '"env": { "SPLERA_API_KEY": "splera_live_..." } } }'
+        '"env": { "SPLERA_API_KEY": "splera_live_..." } } }\n' +
+        'Starting anyway: tools will list, but every call fails until the key is set.'
     );
-    process.exit(1);
   }
 
   const rawUrl = process.env.SPLERA_API_URL ?? 'https://splera.app';
@@ -42,7 +45,7 @@ export function loadConfig(): Config {
     process.exit(1);
   }
 
-  return { apiKey, apiUrl: parsed.origin };
+  return { apiKey: apiKey ?? '', apiUrl: parsed.origin };
 }
 
 /**
@@ -63,4 +66,4 @@ export function isBelow(current: string, minimum: string): boolean {
   return false;
 }
 
-export const CURRENT_MCP_VERSION = '0.1.3';
+export const CURRENT_MCP_VERSION = '0.1.4';

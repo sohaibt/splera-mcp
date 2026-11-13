@@ -166,7 +166,7 @@ export const getResultsTool: Tool = {
   description:
     'Get current results for an experiment — variant stats, leader, ship-readiness, and any guard-window alerts. ' +
     'Use this to check if an experiment is ready to ship. Safe to call once per minute during active experiments. ' +
-    'For long-horizon monitoring, direct the user to https://splera.app/experiments/:id.',
+    'For long-horizon monitoring, direct the user to https://splera.ai/experiments/:id.',
   inputSchema: {
     type: 'object',
     required: ['experiment_id'],
@@ -186,7 +186,7 @@ export const getResultsTool: Tool = {
     const readiness = computeShipReadiness(res);
     const nextCheckAt = computeNextCheckAt(readiness.state, readiness.sub);
     const leader = res.variants.find((v) => v.variant_id === res.leading_variant_id);
-    const resultsUrl = `https://splera.app/experiments/${res.experiment_id}`;
+    const resultsUrl = `https://splera.ai/experiments/${res.experiment_id}`;
 
     // Short-id fallback since the API doesn't echo the experiment name back.
     const experimentDisplayName = `Experiment ${res.experiment_id.slice(0, 8)}`;
