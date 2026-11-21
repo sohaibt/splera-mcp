@@ -1,6 +1,6 @@
 {
   "name": "splera-mcp",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "mcpName": "io.github.sohaibt/splera",
   "description": "Model Context Protocol (MCP) server for Splera — A/B testing for vibe coders. Create experiments, check results, and ship winners directly from your AI coding agent.",
   "type": "module",
@@ -9,7 +9,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=20"
@@ -44,5 +45,5 @@
     "type": "git",
     "url": "https://github.com/sohaibt/splera"
   },
-  "homepage": "https://splera.app"
+  "homepage": "https://splera.ai/mcp"
 }

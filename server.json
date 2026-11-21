@@ -7,20 +7,20 @@
     "url": "https://github.com/sohaibt/splera",
     "source": "github"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "websiteUrl": "https://splera.ai/mcp",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "splera-mcp",
-      "version": "0.1.4",
+      "version": "0.1.5",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
           "name": "SPLERA_API_KEY",
-          "description": "Your Splera API key. Generate one at https://splera.ai/settings.",
+          "description": "Your Splera API key. Generate one at https://splera.ai/mcp/setup.",
           "isRequired": true,
           "isSecret": true,
           "format": "string"

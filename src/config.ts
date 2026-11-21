@@ -19,7 +19,7 @@ export function loadConfig(): Config {
   if (!apiKey) {
     console.error(
       'splera-mcp: SPLERA_API_KEY not set.\n' +
-        'Generate a key at https://splera.ai/settings.\n' +
+        'Generate a key at https://splera.ai/mcp/setup.\n' +
         'Your MCP config env block should look like:\n' +
         '  { "splera": { "command": "npx", "args": ["-y", "splera-mcp@latest"], ' +
         '"env": { "SPLERA_API_KEY": "splera_live_..." } } }\n' +
@@ -66,4 +66,4 @@ export function isBelow(current: string, minimum: string): boolean {
   return false;
 }
 
-export const CURRENT_MCP_VERSION = '0.1.4';
+export const CURRENT_MCP_VERSION = '0.1.5';

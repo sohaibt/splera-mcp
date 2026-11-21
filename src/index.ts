@@ -41,7 +41,7 @@ try {
   } else if (code === 'SPLERA_INVALID_API_KEY') {
     console.error(
       'splera-mcp: API key rejected (401). Tools will list, but every call fails until it is fixed.\n' +
-        'Regenerate at https://splera.ai/settings or verify with:\n' +
+        'Generate a new key at https://splera.ai/mcp/setup or verify with:\n' +
         '  curl -H "Authorization: Bearer $SPLERA_API_KEY" https://splera.app/api/me'
     );
   } else {

@@ -7,6 +7,7 @@ A/B testing for vibe coders, exposed as a Model Context Protocol (MCP) server. Y
 Three native tools your agent gets once installed: `create_experiment`, `get_results`, `ship_winner`. The agent calls them, edits your code to wire the SDK and variant, and reports stats back in plain English. No dashboard tab, no copy-paste, no test infrastructure to learn.
 
 - npm: [`splera-mcp`](https://www.npmjs.com/package/splera-mcp)
+- Guided setup: [splera.ai/mcp/setup](https://splera.ai/mcp/setup)
 - Web docs: [splera.ai/docs/mcp](https://splera.ai/docs/mcp)
 - Issues: [github.com/sohaibt/splera-mcp/issues](https://github.com/sohaibt/splera-mcp/issues)
 
@@ -30,13 +31,13 @@ The agent picks the right tool, makes the call, and either edits your code to in
 
 ### 1. Generate an API key
 
-Go to [splera.ai/settings](https://splera.ai/settings), click **Generate new key**, name it something like `claude-code-macbook`. Copy the key from the one-time modal. It starts with `splera_live_`. You will not see the full key again. If you close the modal without copying, revoke and regenerate.
+Go to [splera.ai/mcp/setup](https://splera.ai/mcp/setup) (one-click key + pre-filled install command + live connection check), or manage keys at [splera.ai/settings](https://splera.ai/settings). Keys start with `splera_live_` and are shown only once. If you close the page without copying, revoke and create a new one.
 
 ### 2. Add the config to your agent
 
 | Agent | Config file | Method |
 |---|---|---|
-| **Claude Code** | `~/.config/claude-code/mcp.json` | One-liner (below) or edit JSON |
+| **Claude Code** | `~/.claude.json` (user scope) | One-liner (below) |
 | **Cursor** | `~/.cursor/mcp.json` | Edit JSON (or Settings → MCP) |
 | **Windsurf** | `~/.codeium/windsurf/mcp_config.json` | Edit JSON |
 | **Zed** | `~/.config/zed/settings.json` (`context_servers` block) | Edit JSON |
@@ -45,10 +46,10 @@ Go to [splera.ai/settings](https://splera.ai/settings), click **Generate new key
 #### Claude Code
 
 ```bash
-claude mcp add splera npx -y splera-mcp@latest --env SPLERA_API_KEY=splera_live_your_key_here
+claude mcp add -s user splera -e SPLERA_API_KEY=splera_live_your_key_here -- npx -y splera-mcp@latest
 ```
 
-Then restart Claude Code.
+Run `claude mcp list` to verify (`splera` should show `✓ Connected`), then start or restart Claude Code.
 
 #### Cursor / Windsurf
 
@@ -78,10 +79,11 @@ Add to `~/.config/zed/settings.json`:
 {
   "context_servers": {
     "splera": {
-      "command": {
-        "path": "npx",
-        "args": ["-y", "splera-mcp@latest"],
-        "env": { "SPLERA_API_KEY": "splera_live_your_key_here" }
+      "source": "custom",
+      "command": "npx",
+      "args": ["-y", "splera-mcp@latest"],
+      "env": {
+        "SPLERA_API_KEY": "splera_live_your_key_here"
       }
     }
   }
@@ -94,15 +96,23 @@ Restart Zed.
 
 ## Verify your install
 
-### Option A: check the key from any terminal
+### Option A: Claude Code one-liner
+
+```bash
+claude mcp list
+```
+
+`splera` should show `✓ Connected` (and [splera.ai/mcp/setup](https://splera.ai/mcp/setup) will flip to **Connected ✓** within a few seconds).
+
+### Option B: check the key from any terminal
 
 ```bash
 curl -H "Authorization: Bearer splera_live_your_key_here" https://splera.app/api/me
 ```
 
-`200 OK` with a JSON body means the key works. `401` means the key is bad or revoked, regenerate at [splera.ai/settings](https://splera.ai/settings).
+`200 OK` with a JSON body means the key works. `401` means the key is bad or revoked — generate a fresh one at [splera.ai/mcp/setup](https://splera.ai/mcp/setup).
 
-### Option B: check the agent's MCP panel after restart
+### Option C: check the agent's MCP panel after restart
 
 Open your agent's **Server logs** or **MCP** panel. You should see:
 
@@ -205,6 +215,6 @@ Ship the winning variant to 100% of traffic. The SDK flips server-side within 30
 - [Settings / API keys](https://splera.ai/settings) — generate, name, revoke
 - [Pricing](https://splera.ai/pricing) — plan limits and upgrade
 - [Web docs](https://splera.ai/docs/mcp) — longer-form setup guide with screenshots
-- [GitHub issues](https://github.com/sohaibt/splera/issues) — bug reports and feature requests
+- [GitHub issues](https://github.com/sohaibt/splera-mcp/issues) — bug reports and feature requests
 
 Built by [Splera](https://splera.ai). A/B testing for vibe coders.

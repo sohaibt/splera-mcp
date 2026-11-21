@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { loadConfig, isBelow } from '../config.js';
+import { readFileSync } from 'node:fs';
+import { loadConfig, isBelow, CURRENT_MCP_VERSION } from '../config.js';
 
 /**
  * loadConfig() fails fast via process.exit(1). We stub exit to throw so the
@@ -160,5 +161,20 @@ describe('isBelow', () => {
     // '1' parsed as [1, NaN, NaN] → ?? 0 coerces, so '1' == '1.0.0'.
     expect(isBelow('1', '1.0.0')).toBe(false);
     expect(isBelow('1', '1.0.1')).toBe(true);
+  });
+});
+
+describe('version parity', () => {
+  it('keeps package.json, server.json, and CURRENT_MCP_VERSION in sync', () => {
+    const pkg = JSON.parse(
+      readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
+    ) as { version: string };
+    const server = JSON.parse(
+      readFileSync(new URL('../../server.json', import.meta.url), 'utf8')
+    ) as { version: string; packages: Array<{ version: string }> };
+
+    expect(CURRENT_MCP_VERSION).toBe(pkg.version);
+    expect(server.version).toBe(pkg.version);
+    expect(server.packages[0]?.version).toBe(pkg.version);
   });
 });

@@ -27,9 +27,9 @@ export class SpleraError extends Error {
  */
 export const HINTS: Record<string, string> = {
   SPLERA_API_KEY_MISSING:
-    'Set SPLERA_API_KEY in the env block of your MCP config (generate a key at https://splera.ai/settings), then restart your agent.',
+    'Set SPLERA_API_KEY in the env block of your MCP config (generate a key at https://splera.ai/mcp/setup), then restart your agent.',
   SPLERA_INVALID_API_KEY:
-    'Check SPLERA_API_KEY or regenerate at https://splera.ai/settings.',
+    'Check SPLERA_API_KEY or generate a fresh key at https://splera.ai/mcp/setup.',
   SPLERA_PLAN_LIMIT_EXCEEDED:
     'Upgrade at https://splera.ai/pricing, or ship/stop an existing experiment to free a slot.',
   SPLERA_DOMAIN_NOT_ALLOWED:
